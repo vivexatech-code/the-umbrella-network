@@ -87,16 +87,18 @@ export async function getSession(): Promise<AdminSession | null> {
   const supabase = authClient();
   if (accessToken) {
     const { data } = await supabase.auth.getUser(accessToken);
-    if (isAdminUser(data.user)) return toAdminSession(data.user);
+    const user = data.user;
+    if (user && isAdminUser(user)) return toAdminSession(user);
   }
 
   if (!refreshToken) return null;
   const refreshed = await supabase.auth.refreshSession({ refresh_token: refreshToken });
-  if (!refreshed.data.session || !isAdminUser(refreshed.data.user)) return null;
+  const refreshedUser = refreshed.data.user;
+  if (!refreshed.data.session || !refreshedUser || !isAdminUser(refreshedUser)) return null;
   try {
     await persistRefreshedSession(refreshed.data.session);
   } catch {
     // Cookie updates are not always allowed during a server render. The refreshed user is still valid for this request.
   }
-  return toAdminSession(refreshed.data.user!);
+  return toAdminSession(refreshedUser);
 }

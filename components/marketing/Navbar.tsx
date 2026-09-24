@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeBatch }) => {
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-slate-900 tracking-tight text-lg leading-tight flex items-center gap-1.5">
-                The Umbrella <span className="text-blue-700 font-bold">Network</span>
+                The Umbrella Network
               </span>
               <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500">
                 CA Harsh Kaushik
