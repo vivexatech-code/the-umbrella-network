@@ -27,7 +27,8 @@ export async function POST(request: Request) {
     return jsonOk({ checkout });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Payment could not be started.";
-    const status = /unavailable|Razorpay/i.test(message) ? 503 : 400;
+    console.error("Create order failed:", message);
+    const status = /temporarily unavailable/i.test(message) ? 503 : 400;
     return jsonError(message, status);
   }
 }

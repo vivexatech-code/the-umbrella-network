@@ -6,7 +6,11 @@ import { cookies } from "next/headers";
 export const ADMIN_COOKIE = "un_admin";
 
 function secret() {
-  return process.env.ADMIN_SESSION_SECRET || "";
+  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_TOKEN || "";
+}
+
+function adminPassword() {
+  return process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH || "";
 }
 
 function safeEqual(a: string, b: string) {
@@ -17,12 +21,12 @@ function safeEqual(a: string, b: string) {
 }
 
 export function adminConfigured() {
-  return Boolean(process.env.ADMIN_USERNAME && process.env.ADMIN_PASSWORD && secret());
+  return Boolean(process.env.ADMIN_USERNAME && adminPassword() && secret());
 }
 
 export function verifyAdminCredentials(username: string, password: string) {
   if (!adminConfigured()) return false;
-  return safeEqual(username, process.env.ADMIN_USERNAME || "") && safeEqual(password, process.env.ADMIN_PASSWORD || "");
+  return safeEqual(username, process.env.ADMIN_USERNAME || "") && safeEqual(password, adminPassword());
 }
 
 export function signSession(username: string) {

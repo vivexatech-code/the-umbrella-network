@@ -1,0 +1,7 @@
+# Join Masterclass popup interval in milliseconds. Default is 3 minutes.
+NEXT_PUBLIC_JOIN_POPUP_INTERVAL_MS="180000"
+
+# Supabase. The anon key may be public. The service role key must stay on the server.
+NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"

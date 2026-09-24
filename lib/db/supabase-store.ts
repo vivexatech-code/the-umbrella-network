@@ -16,8 +16,21 @@ import type {
   WebsiteSettings,
 } from "@/lib/types";
 
-function assertOk(error: { message: string } | null, action: string) {
-  if (error) throw new Error(`${action}: ${error.message}`);
+export class MissingSupabaseSchemaError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "MissingSupabaseSchemaError";
+  }
+}
+
+function assertOk(error: { message: string; code?: string } | null, action: string) {
+  if (!error) return;
+  if (error.code === "PGRST205" || /schema cache|does not exist/i.test(error.message)) {
+    throw new MissingSupabaseSchemaError(
+      "Supabase is connected, but the tables have not been created. Run supabase/schema.sql in the Supabase SQL editor, then refresh.",
+    );
+  }
+  throw new Error(`${action}: ${error.message}`);
 }
 
 function registrationFrom(row: Registration): Registration {
