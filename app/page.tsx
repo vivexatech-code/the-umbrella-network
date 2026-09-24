@@ -39,10 +39,9 @@ export default async function HomePage() {
           <Roadmap />
           <WhyThisMasterclass />
           <MentorSection mentorData={data.settings.mentor} />
-          <StudentSpeakers speakers={data.speakers} />
+          <LinkedInPosts posts={data.posts} />
           <SocialProofResults />
           <Testimonials testimonials={data.testimonials} />
-          <LinkedInPosts posts={data.posts} />
           <Pricing activeBatch={data.activeBatch} pricingSettings={data.settings.pricing} />
           <FaqSection faqs={data.settings.faqs} />
           <ContactSection contactSettings={data.settings.contact} />

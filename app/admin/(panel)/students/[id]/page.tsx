@@ -45,7 +45,13 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
           </div>
         ))}
       </div>
-      {registration.payment_status === "paid" && <RetryButton id={registration.id} />}
+      {registration.payment_status === "paid" && (
+        <div className="flex flex-wrap gap-3">
+          <RetryButton id={registration.id} target="drive" label="Retry Drive access" />
+          <RetryButton id={registration.id} target="sheets" label="Retry Google Sheet" />
+          <RetryButton id={registration.id} label="Retry all failed steps" />
+        </div>
+      )}
     </div>
   );
 }

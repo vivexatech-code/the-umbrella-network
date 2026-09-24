@@ -1,7 +1,7 @@
 import "server-only";
 
 import { google } from "googleapis";
-import { googleAuth } from "@/lib/google/auth";
+import { googleAuth, googleClientEmail } from "@/lib/google/auth";
 import type { Registration } from "@/lib/types";
 
 const HEADERS = [
@@ -26,7 +26,22 @@ export async function syncRegistrationToSheet(registration: Registration) {
   const auth = googleAuth(["https://www.googleapis.com/auth/spreadsheets"]);
   if (!auth) throw new Error("Google service account is not configured.");
   const sheets = google.sheets({ version: "v4", auth });
-  const tab = process.env.GOOGLE_SHEETS_TAB || "Registrations";
+  const preferredTab = process.env.GOOGLE_SHEETS_TAB || "Registrations";
+  let tab = preferredTab;
+  try {
+    const meta = await sheets.spreadsheets.get({ spreadsheetId });
+    const titles = (meta.data.sheets || []).map((sheet) => sheet.properties?.title || "").filter(Boolean);
+    if (!titles.includes(preferredTab)) {
+      await sheets.spreadsheets.batchUpdate({
+        spreadsheetId,
+        requestBody: { requests: [{ addSheet: { properties: { title: preferredTab } } }] },
+      });
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Google Sheets request failed.";
+    const account = googleClientEmail();
+    throw new Error(`${message}${account ? ` Share the spreadsheet with ${account} as Editor, then retry.` : ""}`);
+  }
   const headerRange = `${tab}!A1:M1`;
   const existing = await sheets.spreadsheets.values.get({ spreadsheetId, range: headerRange });
   const first = existing.data.values?.[0]?.[0];

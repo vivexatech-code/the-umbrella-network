@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
   if (!pathname.startsWith("/admin") || pathname.startsWith("/admin/login")) {
     return NextResponse.next();
   }
-  const token = request.cookies.get("un_admin")?.value;
+  const token = request.cookies.get("sb-admin-access")?.value || request.cookies.get("sb-admin-refresh")?.value;
   if (token) return NextResponse.next();
   const url = request.nextUrl.clone();
   url.pathname = "/admin/login";

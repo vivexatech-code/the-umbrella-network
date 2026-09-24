@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RetryButton } from "@/components/admin/retry-button";
 import { getStore } from "@/lib/db";
 import type { PaymentStatus } from "@/lib/types";
 
@@ -58,8 +59,14 @@ export default async function StudentsPage({
                 </td>
                 <td className="px-4 py-3">{item.batch_number}</td>
                 <td className="px-4 py-3 capitalize">{item.payment_status}</td>
-                <td className="px-4 py-3">{item.drive_access_status}</td>
-                <td className="px-4 py-3">{item.sheets_sync_status}</td>
+                <td className="px-4 py-3">
+                  <div className="capitalize">{item.drive_access_status}</div>
+                  {item.payment_status === "paid" && <div className="mt-2"><RetryButton id={item.id} target="drive" /></div>}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="capitalize">{item.sheets_sync_status}</div>
+                  {item.payment_status === "paid" && <div className="mt-2"><RetryButton id={item.id} target="sheets" /></div>}
+                </td>
               </tr>
             ))}
           </tbody>

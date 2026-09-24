@@ -94,6 +94,44 @@ async function fulfillRegistrationInner(registrationId: string) {
   return current;
 }
 
+export async function retryDriveAccess(registrationId: string) {
+  const store = await getStore();
+  const registration = await store.getRegistration(registrationId);
+  if (!registration || registration.payment_status !== "paid") return null;
+  const batch = await store.getBatch(registration.batch_id);
+  if (!batch) return registration;
+  try {
+    await grantDriveAccess(registration.email, batch.drive_folder_id);
+    return (await store.updateRegistration(registration.id, {
+      drive_access_status: "success",
+      drive_access_error: "",
+    })) || registration;
+  } catch (error) {
+    return (await store.updateRegistration(registration.id, {
+      drive_access_status: "failed",
+      drive_access_error: messageOf(error),
+    })) || registration;
+  }
+}
+
+export async function retrySheetSync(registrationId: string) {
+  const store = await getStore();
+  const registration = await store.getRegistration(registrationId);
+  if (!registration || registration.payment_status !== "paid") return null;
+  try {
+    await syncRegistrationToSheet(registration);
+    return (await store.updateRegistration(registration.id, {
+      sheets_sync_status: "success",
+      sheets_sync_error: "",
+    })) || registration;
+  } catch (error) {
+    return (await store.updateRegistration(registration.id, {
+      sheets_sync_status: "failed",
+      sheets_sync_error: messageOf(error),
+    })) || registration;
+  }
+}
+
 export async function retryPendingFulfillment() {
   const store = await getStore();
   const registrations = await store.listRegistrations();
