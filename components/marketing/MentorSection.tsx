@@ -14,9 +14,7 @@ export function MentorSection({ mentorData }: MentorSectionProps) {
     'Articleship at Flipkart',
     'Former Assistant Manager at Deloitte',
   ];
-  const photoUrl =
-    mentorData?.image_url ||
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80';
+  const photoUrl = '/ca-harsh.jpg';
 
   return (
     <section id="mentor" className="py-20 bg-slate-900 text-white relative overflow-hidden">

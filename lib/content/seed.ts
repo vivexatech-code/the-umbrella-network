@@ -106,7 +106,7 @@ export const SEED_SETTINGS: WebsiteSettings = {
       "Former Assistant Manager at Deloitte",
     ],
     linkedin_url: "https://www.linkedin.com/in/ca-harsh-kaushik/",
-    image_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80",
+    image_url: "/ca-harsh.jpg",
   },
   contact: {
     email: "caumbrellanetwork@gmail.com",
