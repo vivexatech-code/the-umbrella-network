@@ -15,7 +15,7 @@ const empty = {
   fee: 999,
   whatsapp_link: '',
   drive_folder_url: '',
-  session_info: 'Live sessions run across six days. Daily Zoom links are shared in the batch WhatsApp group.',
+  session_info: 'Live sessions run across six days. Daily Google Meet links are shared in the batch WhatsApp group.',
   max_seats: 100,
   status: 'upcoming' as Batch['status'],
   description: '',
@@ -26,6 +26,18 @@ export function BatchManager({ batches }: { batches: Batch[] }) {
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(empty);
   const [message, setMessage] = useState<string | null>(null);
+
+  async function remove(batch: Batch) {
+    const confirmed = window.confirm(`Delete ${batch.batch_number}? Paid student records for this batch are kept, and a batch with paid students cannot be deleted.`);
+    if (!confirmed) return;
+    const response = await fetch(`/api/admin/batches/${batch.id}`, { method: 'DELETE' });
+    const data = (await response.json()) as { error?: string };
+    setMessage(data.error || `${batch.batch_number} deleted.`);
+    if (response.ok) {
+      if (editing === batch.id) load();
+      router.refresh();
+    }
+  }
 
   function load(batch?: Batch) {
     if (!batch) {
@@ -43,7 +55,7 @@ export function BatchManager({ batches }: { batches: Batch[] }) {
       fee: batch.fee,
       whatsapp_link: batch.whatsapp_link,
       drive_folder_url: batch.drive_folder_url,
-      session_info: batch.session_info,
+      session_info: batch.session_info.replace(/Zoom/g, 'Google Meet'),
       max_seats: batch.max_seats,
       status: batch.status,
       description: batch.description,
@@ -108,7 +120,10 @@ export function BatchManager({ batches }: { batches: Batch[] }) {
               <div className="text-xs text-slate-500 mt-1">{batch.start_date} – {batch.end_date} · Deadline {batch.registration_deadline}</div>
               <div className="text-xs font-semibold text-blue-700 mt-1">{adminBatchLabel(batch)} · {batch.seats_booked}/{batch.max_seats} seats · ₹{batch.fee}</div>
             </div>
-            <button type="button" onClick={() => load(batch)} className="text-sm font-bold border border-slate-300 rounded-xl px-3 py-2">Edit</button>
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={() => load(batch)} className="text-sm font-bold border border-slate-300 rounded-xl px-3 py-2">Edit</button>
+              <button type="button" onClick={() => void remove(batch)} className="text-sm font-bold border border-red-200 text-red-700 rounded-xl px-3 py-2 hover:bg-red-50">Delete</button>
+            </div>
           </div>
         ))}
       </div>

@@ -18,7 +18,7 @@ export const SEED_BATCHES: Batch[] = [
     drive_folder_id: "1Tq4a24HL9V4SxrEFsjfOpSMLK085_6nD",
     drive_folder_url: "https://drive.google.com/drive/folders/1Tq4a24HL9V4SxrEFsjfOpSMLK085_6nD",
     session_info:
-      "Live sessions run across six days. Daily Zoom links, CV review slots, and announcements are shared in your batch WhatsApp group.",
+      "Live sessions run across six days. Daily Google Meet links, CV review slots, and announcements are shared in your batch WhatsApp group.",
     max_seats: 100,
     seats_booked: 96,
     status: "active",
@@ -42,7 +42,7 @@ export const SEED_BATCHES: Batch[] = [
     drive_folder_id: "1Tq4a24HL9V4SxrEFsjfOpSMLK085_6nD",
     drive_folder_url: "https://drive.google.com/drive/folders/1Tq4a24HL9V4SxrEFsjfOpSMLK085_6nD",
     session_info:
-      "Live sessions run across six days. Daily Zoom links, CV review slots, and announcements are shared in your batch WhatsApp group.",
+      "Live sessions run across six days. Daily Google Meet links, CV review slots, and announcements are shared in your batch WhatsApp group.",
     max_seats: 100,
     seats_booked: 14,
     status: "upcoming",

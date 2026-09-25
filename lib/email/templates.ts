@@ -34,7 +34,7 @@ export function accessEmail(registration: Registration, batch: Batch) {
     <p>Your seat for <strong>${escapeHtml(registration.batch_name)}</strong> (${escapeHtml(registration.batch_number)}) is confirmed. This email contains your session access details.</p>
     <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:16px;margin:16px 0;">
       <div style="font-weight:800;color:#1e3a8a;">Google Drive resources</div>
-      <p style="font-size:14px;color:#1e40af;">${escapeHtml(batch.session_info || "Session links and materials are shared with your batch.")}</p>
+      <p style="font-size:14px;color:#1e40af;">${escapeHtml((batch.session_info || "Session links and materials are shared with your batch.").replace(/Zoom/g, "Google Meet"))}</p>
       <a href="${escapeHtml(batch.drive_folder_url)}" style="display:inline-block;background:#2563eb;color:#fff;text-decoration:none;padding:12px 16px;border-radius:10px;font-weight:700;">Open Google Drive</a>
     </div>
     <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:16px;">
