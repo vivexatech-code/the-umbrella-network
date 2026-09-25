@@ -34,6 +34,9 @@ export function MentorSection({ mentorData }: MentorSectionProps) {
                     </span>
                   </div>
                 </div>
+                <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black text-xs px-3 py-1.5 rounded-xl shadow-lg border border-amber-300">
+                  AIR 24
+                </div>
               </div>
               <h3 className="text-2xl font-bold text-white tracking-tight">{mentorData?.name || 'CA Harsh Kaushik'}</h3>
               <p className="text-xs sm:text-sm text-blue-300 font-medium mt-1">
