@@ -23,9 +23,7 @@ export const Footer: React.FC = () => {
           {/* Col 1 & 2: Brand & Description */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                ☂
-              </div>
+              <img src="/logo.jpeg" alt="The Umbrella Network" className="w-10 h-10 rounded-xl object-contain" />
               <span className="font-extrabold text-white text-lg tracking-tight">
                 The Umbrella <span className="text-blue-500">Network</span>
               </span>

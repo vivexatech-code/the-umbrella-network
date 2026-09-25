@@ -24,7 +24,7 @@ export function JoinPopup() {
   const fee = activeBatch?.fee || 999;
 
   return (
-    <div className="fixed z-40 bottom-24 right-3 left-3 sm:left-auto sm:max-w-sm animate-in fade-in slide-in-from-bottom-2">
+    <div className="fixed z-40 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-1.5rem)] sm:w-auto sm:max-w-sm animate-in fade-in zoom-in-95">
       <div className="bg-white border border-slate-200 shadow-2xl rounded-3xl p-5 relative">
         <button
           type="button"
@@ -48,7 +48,7 @@ export function JoinPopup() {
           }}
           className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl"
         >
-          <span>Join Masterclass – ₹{fee}</span>
+          <span>Join Masterclass – ₹{fee} <span className="text-blue-100 line-through">₹1999</span></span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>

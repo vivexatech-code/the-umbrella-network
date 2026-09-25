@@ -50,7 +50,7 @@ export const Roadmap: React.FC = () => {
             <span>Structured 6-Day Program</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            The 6-Day Roadmap
+            The 6-Day Live Classes
           </h2>
           <p className="text-base sm:text-lg text-slate-600 mt-3">
             A step-by-step masterclass taking you through every single phase of your articleship

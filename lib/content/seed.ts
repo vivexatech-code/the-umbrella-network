@@ -100,9 +100,8 @@ export const SEED_SETTINGS: WebsiteSettings = {
       "I created this masterclass because I remember how confusing the articleship search can be when you don't know where to start, how to approach firms, or how to present yourself.",
     credentials: [
       "Qualified CA in first attempt",
-      "AIR 24 in CA Foundation",
       "Articleship at PwC",
-      "Articleship at Flipkart",
+      "Industrial Training at Flipkart",
       "Former Assistant Manager at Deloitte",
     ],
     linkedin_url: "https://www.linkedin.com/in/ca-harsh-kaushik/",

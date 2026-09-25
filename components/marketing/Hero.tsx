@@ -39,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({ activeBatch }) => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 text-blue-800 text-xs sm:text-sm font-semibold mb-6 shadow-xs">
             <span className="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
-            <span>6-Day Articleship Masterclass • Next Batch Enrolling</span>
+            <span>6-Day Live Articleship Masterclass • Next Batch Enrolling</span>
             <span className="text-blue-400">|</span>
             <span className="font-bold text-blue-900">₹999 Only</span>
           </div>
@@ -68,7 +68,7 @@ export const Hero: React.FC<HeroProps> = ({ activeBatch }) => {
               id="hero-primary-cta"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-base sm:text-lg px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-blue-600/35 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
             >
-              <span>Join the Masterclass – ₹999</span>
+              <span>Join the Masterclass – ₹999 <span className="text-blue-100 line-through">₹1999</span></span>
               <ArrowRight className="w-5 h-5" />
             </button>
 

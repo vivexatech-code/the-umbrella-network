@@ -16,7 +16,7 @@ function cardsPerView(width: number) {
 
 function PostCard({ post }: { post: LinkedInPost }) {
   return (
-    <article className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col h-[28rem] overflow-hidden">
+    <article id="speakers" className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-5 flex flex-col h-[28rem] overflow-hidden">
       <div className="flex items-center gap-3 mb-4 shrink-0">
         <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-100 border border-blue-200 shrink-0">
           {post.avatar_url ? (

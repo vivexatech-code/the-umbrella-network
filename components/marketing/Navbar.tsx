@@ -67,9 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeBatch }) => {
             className="flex items-center gap-2.5 group cursor-pointer"
             id="navbar-brand-logo"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-900 via-blue-900 to-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-900/10 group-hover:scale-105 transition-transform">
-              <span className="font-bold text-lg tracking-wider">☂</span>
-            </div>
+            <img src="/logo.jpeg" alt="The Umbrella Network" className="w-12 h-12 rounded-xl object-contain" />
             <div className="flex flex-col">
               <span className="font-extrabold text-slate-900 tracking-tight text-lg leading-tight flex items-center gap-1.5">
                 The Umbrella Network
@@ -114,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeBatch }) => {
               id="navbar-join-cta"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <span>Join Masterclass – ₹999</span>
+              <span>Join Masterclass – ₹999 <span className="text-blue-100 line-through">₹1999</span></span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

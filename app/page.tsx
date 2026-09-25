@@ -34,12 +34,13 @@ export default async function HomePage() {
           <Hero activeBatch={data.activeBatch} />
           <TrustStats statistics={data.settings.statistics} />
           <CurrentBatchBanner batches={data.batches} activeBatch={data.activeBatch} />
-          <WhyArticleshipDifficult />
-          <WhatYouWillLearn />
-          <Roadmap />
-          <WhyThisMasterclass />
           <MentorSection mentorData={data.settings.mentor} />
           <LinkedInPosts posts={data.posts} />
+          <WhyArticleshipDifficult />
+          <Roadmap />
+          <WhatYouWillLearn />
+          <WhyThisMasterclass />
+
           <SocialProofResults />
           <Testimonials testimonials={data.testimonials} />
           <Pricing activeBatch={data.activeBatch} pricingSettings={data.settings.pricing} />

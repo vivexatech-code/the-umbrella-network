@@ -9,9 +9,8 @@ interface MentorSectionProps {
 export function MentorSection({ mentorData }: MentorSectionProps) {
   const credentials = mentorData?.credentials || [
     'Qualified CA in first attempt',
-    'AIR 24 in CA Foundation',
     'Articleship at PwC',
-    'Articleship at Flipkart',
+    'Industrial Training at Flipkart',
     'Former Assistant Manager at Deloitte',
   ];
   const photoUrl = '/ca-harsh.jpg';
