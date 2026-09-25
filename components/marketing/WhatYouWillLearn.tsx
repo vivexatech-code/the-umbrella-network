@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import {
   FileText,
   Building2,
@@ -15,12 +16,29 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Sparkles,
 } from 'lucide-react';
 
 export const WhatYouWillLearn: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'cv' | 'firms' | 'interviews' | 'technical'>('all');
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'cv' | 'firms' | 'interviews' | 'technical'
+  >('all');
+
   const [expandedModule, setExpandedModule] = useState<number | null>(null);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [visibleCards, setVisibleCards] = useState(3);
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  /*
+   * ---------------------------------------
+   * MODULE DATA
+   * ---------------------------------------
+   */
 
   const modules = [
     {
@@ -41,6 +59,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Quantifying achievements without prior full-time experience',
       ],
     },
+
     {
       num: 2,
       category: 'firms',
@@ -59,6 +78,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Future CA Final study leave policies & career paths',
       ],
     },
+
     {
       num: 3,
       category: 'firms',
@@ -77,6 +97,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Consulting vs. Compliance: Exit opportunities matrix',
       ],
     },
+
     {
       num: 4,
       category: 'cv',
@@ -94,6 +115,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Avoiding common spray-and-pray application errors',
       ],
     },
+
     {
       num: 5,
       category: 'cv',
@@ -110,6 +132,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Follow-up timing & respecting recruiter schedules',
       ],
     },
+
     {
       num: 6,
       category: 'cv',
@@ -127,6 +150,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Building credibility and visibility on the feed',
       ],
     },
+
     {
       num: 7,
       category: 'interviews',
@@ -144,6 +168,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Handling "Why should we hire you?" with calm confidence',
       ],
     },
+
     {
       num: 8,
       category: 'interviews',
@@ -159,6 +184,7 @@ export const WhatYouWillLearn: React.FC = () => {
         'Real-time constructive feedback and improvement loops',
       ],
     },
+
     {
       num: 9,
       category: 'interviews',
@@ -170,11 +196,12 @@ export const WhatYouWillLearn: React.FC = () => {
         'Tactics for entering the discussion early with composure',
         'Structured communication and voice modulation',
         'How to professionally disagree without confrontation',
-        'Building effectively on another candidate\'s point',
+        "Building effectively on another candidate's point",
         'Delivering a crisp, memorable conclusion',
         'Common fatal mistakes that lead to immediate elimination',
       ],
     },
+
     {
       num: 10,
       category: 'technical',
@@ -196,26 +223,131 @@ export const WhatYouWillLearn: React.FC = () => {
     },
   ];
 
+  /*
+   * ---------------------------------------
+   * FILTERED MODULES
+   * ---------------------------------------
+   */
+
   const filteredModules =
     activeTab === 'all'
       ? modules
       : modules.filter((m) => m.category === activeTab);
 
+  /*
+   * ---------------------------------------
+   * RESPONSIVE CARD COUNT
+   * ---------------------------------------
+   */
+
+  useEffect(() => {
+    const updateVisibleCards = () => {
+      if (window.innerWidth < 640) {
+        setVisibleCards(1);
+      } else if (window.innerWidth < 1024) {
+        setVisibleCards(2);
+      } else {
+        setVisibleCards(3);
+      }
+    };
+
+    updateVisibleCards();
+
+    window.addEventListener('resize', updateVisibleCards);
+
+    return () => {
+      window.removeEventListener('resize', updateVisibleCards);
+    };
+  }, []);
+
+  /*
+   * ---------------------------------------
+   * RESET SLIDER WHEN FILTER CHANGES
+   * ---------------------------------------
+   */
+
+  useEffect(() => {
+    setCurrentSlide(0);
+    setExpandedModule(null);
+  }, [activeTab]);
+
+  /*
+   * ---------------------------------------
+   * AUTO SLIDER
+   * ---------------------------------------
+   */
+
+  useEffect(() => {
+    if (isHovered || filteredModules.length <= visibleCards) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setCurrentSlide((prev) => {
+        const maxSlide = Math.max(
+          filteredModules.length - visibleCards,
+          0
+        );
+
+        return prev >= maxSlide ? 0 : prev + 1;
+      });
+    }, 3500);
+
+    return () => window.clearInterval(interval);
+  }, [isHovered, filteredModules.length, visibleCards]);
+
+  /*
+   * ---------------------------------------
+   * SLIDER CONTROLS
+   * ---------------------------------------
+   */
+
+  const maxSlide = Math.max(
+    filteredModules.length - visibleCards,
+    0
+  );
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) =>
+      prev >= maxSlide ? 0 : prev + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) =>
+      prev <= 0 ? maxSlide : prev - 1
+    );
+  };
+
+  /*
+   * ---------------------------------------
+   * RENDER
+   * ---------------------------------------
+   */
+
   return (
-    <section id="modules" className="py-20 bg-white border-b border-slate-200/80">
+    <section
+      id="modules"
+      className="py-20 bg-white border-b border-slate-200/80"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
+
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Comprehensive Curriculum</span>
           </div>
+
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             What You Will Learn
           </h2>
+
           <p className="text-base sm:text-lg text-slate-600 mt-3">
-            10 intensive, field-tested modules covering every stage of your articleship journey from
-            your initial CV draft to your final partner round and day-one Excel skills.
+            10 intensive, field-tested modules covering every stage of your
+            articleship journey from your initial CV draft to your final
+            partner round and day-one Excel skills.
           </p>
 
           {/* Category Filter Pills */}
@@ -229,7 +361,9 @@ export const WhatYouWillLearn: React.FC = () => {
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() =>
+                  setActiveTab(tab.id as typeof activeTab)
+                }
                 className={`text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl transition-all ${
                   activeTab === tab.id
                     ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
@@ -242,83 +376,228 @@ export const WhatYouWillLearn: React.FC = () => {
           </div>
         </div>
 
-        {/* Modules Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {filteredModules.map((mod) => {
-            const IconComponent = mod.icon;
-            const isExpanded = expandedModule === mod.num;
+        {/* ---------------------------------------
+            MODULE SLIDER
+        --------------------------------------- */}
 
-            return (
-              <div
-                key={mod.num}
-                className="bg-slate-50/70 rounded-2xl border border-slate-200/80 hover:border-blue-300 hover:shadow-md transition-all p-6 sm:p-7 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
-                        <IconComponent className="w-5 h-5" />
-                      </div>
+        <div
+          className="relative"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {/* Slider Viewport */}
+          <div className="overflow-hidden -mx-3">
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{
+                transform: `translateX(-${
+                  currentSlide * (100 / visibleCards)
+                }%)`,
+              }}
+            >
+              {filteredModules.map((mod) => {
+                const IconComponent = mod.icon;
+                const isExpanded = expandedModule === mod.num;
+
+                return (
+                  <div
+                    key={mod.num}
+                    className="min-w-full sm:min-w-[50%] lg:min-w-[33.333333%] px-3"
+                  >
+                    <div className="h-full min-h-[420px] bg-slate-50/70 rounded-2xl border border-slate-200/80 hover:border-blue-300 hover:shadow-lg transition-all p-6 sm:p-7 flex flex-col justify-between">
+
                       <div>
-                        <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider">
-                          MODULE {mod.num}
-                        </span>
-                        <h3 className="text-lg font-bold text-slate-900 leading-tight">
-                          {mod.title}
-                        </h3>
+
+                        {/* Card Header */}
+                        <div className="flex items-start justify-between gap-3 mb-4">
+
+                          <div className="flex items-center gap-3 min-w-0">
+
+                            <div className="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm shrink-0">
+                              <IconComponent className="w-5 h-5" />
+                            </div>
+
+                            <div className="min-w-0">
+                              <span className="text-[11px] font-bold text-blue-700 uppercase tracking-wider">
+                                MODULE {mod.num}
+                              </span>
+
+                              <h3 className="text-lg font-bold text-slate-900 leading-tight">
+                                {mod.title}
+                              </h3>
+                            </div>
+
+                          </div>
+
+                          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 shrink-0">
+                            {mod.tag}
+                          </span>
+
+                        </div>
+
+                        {/* Topics */}
+                        <ul className="space-y-2.5 mt-5 text-xs sm:text-sm text-slate-700">
+
+                          {mod.topics
+                            .slice(
+                              0,
+                              isExpanded
+                                ? mod.topics.length
+                                : 5
+                            )
+                            .map((topic, idx) => (
+                              <li
+                                key={idx}
+                                className="flex items-start gap-2"
+                              >
+                                <Check className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+
+                                <span className="leading-snug">
+                                  {topic}
+                                </span>
+                              </li>
+                            ))}
+
+                        </ul>
+
                       </div>
+
+                      {/* Card Footer */}
+                      {mod.topics.length > 5 && (
+                        <div className="mt-5 pt-4 border-t border-slate-200/60 flex items-center justify-between">
+
+                          <button
+                            onClick={() =>
+                              setExpandedModule(
+                                isExpanded
+                                  ? null
+                                  : mod.num
+                              )
+                            }
+                            className="text-xs font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
+                          >
+                            <span>
+                              {isExpanded
+                                ? 'Show less'
+                                : `View all ${mod.topics.length} topics`}
+                            </span>
+
+                            {isExpanded ? (
+                              <ChevronUp className="w-3.5 h-3.5" />
+                            ) : (
+                              <ChevronDown className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+
+                          <span className="text-[11px] text-slate-400">
+                            Day{' '}
+                            {Math.min(
+                              6,
+                              Math.ceil(mod.num / 1.7)
+                            )}{' '}
+                            Topic
+                          </span>
+
+                        </div>
+                      )}
+
                     </div>
-                    <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-600 shrink-0">
-                      {mod.tag}
-                    </span>
                   </div>
+                );
+              })}
+            </div>
+          </div>
 
-                  {/* Highlights checklist */}
-                  <ul className="space-y-2 mt-4 text-xs sm:text-sm text-slate-700">
-                    {mod.topics.slice(0, isExpanded ? mod.topics.length : 5).map((topic, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                        <span className="leading-snug">{topic}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+          {/* Desktop Previous Button */}
+          {filteredModules.length > visibleCards && (
+            <>
+              <button
+                type="button"
+                onClick={prevSlide}
+                aria-label="Previous modules"
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 hidden lg:flex h-11 w-11 items-center justify-center rounded-full bg-white border border-slate-200 shadow-lg text-slate-700 hover:bg-blue-600 hover:text-white transition-all duration-200"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
 
-                {mod.topics.length > 5 && (
-                  <div className="mt-5 pt-4 border-t border-slate-200/60 flex items-center justify-between">
-                    <button
-                      onClick={() => setExpandedModule(isExpanded ? null : mod.num)}
-                      className="text-xs font-semibold text-blue-700 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
-                    >
-                      <span>{isExpanded ? 'Show less' : `View all ${mod.topics.length} topics`}</span>
-                      {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                    </button>
-                    <span className="text-[11px] text-slate-400">Day {Math.min(6, Math.ceil(mod.num / 1.7))} Topic</span>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              {/* Desktop Next Button */}
+              <button
+                type="button"
+                onClick={nextSlide}
+                aria-label="Next modules"
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 hidden lg:flex h-11 w-11 items-center justify-center rounded-full bg-white border border-slate-200 shadow-lg text-slate-700 hover:bg-blue-600 hover:text-white transition-all duration-200"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
+
+          {/* Dots */}
+          {filteredModules.length > visibleCards && (
+            <div className="flex justify-center items-center gap-2 mt-7">
+              {Array.from({ length: maxSlide + 1 }).map(
+                (_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setCurrentSlide(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentSlide === index
+                        ? 'w-7 bg-blue-600'
+                        : 'w-2 bg-slate-300 hover:bg-slate-400'
+                    }`}
+                  />
+                )
+              )}
+            </div>
+          )}
+
+          {/* Mobile swipe hint */}
+          {filteredModules.length > visibleCards && (
+            <div className="lg:hidden text-center mt-3 text-xs text-slate-400">
+              Swipe through the modules
+            </div>
+          )}
         </div>
 
-        {/* Domain Comparison Framework Spotlight */}
+        {/* ---------------------------------------
+            DOMAIN COMPARISON
+        --------------------------------------- */}
+
         <div className="mt-14 max-w-5xl mx-auto bg-gradient-to-br from-slate-900 to-blue-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+
             <div>
+
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-wider mb-2">
                 Module 3 Deep Dive
               </div>
+
               <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
                 The Articleship Domain Comparison Matrix
               </h3>
+
               <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl">
-                We compare Statutory Audit, Internal Audit, Direct Tax, Indirect Tax, M&A Tax,
-                Valuation, and Consulting across 5 key dimensions: CA Final study balance, partner exit
+                We compare Statutory Audit, Internal Audit, Direct Tax,
+                Indirect Tax, M&A Tax, Valuation, and Consulting across
+                5 key dimensions: CA Final study balance, partner exit
                 options, industry demand, and day-to-day work profile.
               </p>
+
             </div>
+
             <div className="flex flex-wrap gap-2 shrink-0">
-              {['Stat Audit', 'Direct Tax', 'M&A Tax', 'Internal Audit', 'Risk Advisory', 'Valuation'].map((domain) => (
+
+              {[
+                'Stat Audit',
+                'Direct Tax',
+                'M&A Tax',
+                'Internal Audit',
+                'Risk Advisory',
+                'Valuation',
+              ].map((domain) => (
                 <span
                   key={domain}
                   className="px-2.5 py-1 bg-white/10 hover:bg-white/20 border border-white/15 rounded-lg text-xs font-medium text-blue-200"
@@ -326,9 +605,13 @@ export const WhatYouWillLearn: React.FC = () => {
                   {domain}
                 </span>
               ))}
+
             </div>
+
           </div>
+
         </div>
+
       </div>
     </section>
   );
