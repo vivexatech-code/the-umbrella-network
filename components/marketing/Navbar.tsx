@@ -67,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeBatch }) => {
             className="flex items-center gap-2.5 group cursor-pointer"
             id="navbar-brand-logo"
           >
-            <img src="/logo.jpeg" alt="The Umbrella Network" className="w-12 h-12 rounded-xl object-contain" />
+            <img src="/logo.jpeg" alt="The Umbrella Network" className="w-20 h-20 rounded-xl object-contain" />
             <div className="flex flex-col">
               <span className="font-extrabold text-slate-900 tracking-tight text-lg leading-tight flex items-center gap-1.5">
                 The Umbrella Network
