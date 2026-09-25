@@ -39,8 +39,6 @@ export default async function HomePage() {
           <WhyArticleshipDifficult />
           <Roadmap />
           <WhatYouWillLearn />
-          <WhyThisMasterclass />
-
           <SocialProofResults />
           <Testimonials testimonials={data.testimonials} />
           <Pricing activeBatch={data.activeBatch} pricingSettings={data.settings.pricing} />
