@@ -10,6 +10,8 @@ html {
 
 body {
   overflow-x: clip;
+}::-webkit-scrollbar{
+  display: none;
 }
 
 @keyframes un-fade {
